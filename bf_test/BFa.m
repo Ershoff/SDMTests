@@ -12,7 +12,7 @@
 
 function [a, ah] = BFa(p, t, L, mu, net, mc)
 
-    inf_const = 1000000000; %for imitate infinitely big quantity
+    inf_const = 10000000000; %for imitate infinitely big quantity
   
     a = zeros(size(mc,1), L);
     ah = zeros(size(mc,1), L);
@@ -41,10 +41,11 @@ function [a, ah] = BFa(p, t, L, mu, net, mc)
             g = 0;
             for i = 1:length(neigh_nodes)                    
                 arc = find_arc_by_nodes(net, neigh_nodes(i), k);
-                g = g + exp(-(a_prev(neigh_nodes(i)) + t(arc)/mu));
+                g = g + exp(-(a_prev(neigh_nodes(i)) + t(arc))/mu);     %crutial operation
             end
+            
             a(k,l) =  -mu*log(g);
-            ah(k,l) =  -mu*log(exp(-ah(k,l-1)/mu) + g);
+            ah(k,l) =  -mu*log(exp(-ah(k,l-1)/mu) + g);                
         end       
     end
     
