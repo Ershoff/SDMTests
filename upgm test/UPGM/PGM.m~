@@ -1,0 +1,35 @@
+%test banch for universal primal gradient method
+    
+    L = 1;
+    
+    x = [1;1;1];
+    [fun, grad] = exfun(x);
+    
+    %Number of interation
+    Num = 5;
+    
+    for k = 1:Num
+        i = 0;
+        while true
+            M = (2^i) * L
+            x_new = Beta(x, grad, M);
+            [f_new, grad_new] = exfun(x);
+            cond = (f_new <= fun + ...
+                    grad' * (x_new - x) + ...
+                    (M / 2) * (x_new - x)' * (x_new - x) + ...
+                    (1/2) * e)
+            if cond
+                break;
+            end
+            i = i + 1;    
+        end
+        fun = f_new;
+        grad = grad_new;
+        x = x_new
+        L = (2^(i-1)) * L; 
+    end
+    
+    F = f_new;
+    grad;
+end
+
